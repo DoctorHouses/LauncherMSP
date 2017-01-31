@@ -1,0 +1,25 @@
+﻿<Window x:Class="LauncherMinecraftV3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LauncherMinecraftV3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner">
+
+    <Border BorderBrush="Transparent" BorderThickness="2" CornerRadius="40,40,15,15">
+        <Border.Background>
+            <ImageBrush ImageSource="background.png"/>
+        </Border.Background>
+        <Grid Name="Container">
+            <Grid.Effect>
+                <DropShadowEffect/>
+            </Grid.Effect>
+            <Grid x:Name="TitleBar" Height="40.742" Width="1049.377" Margin="0,-2,-3.977,0" VerticalAlignment="Top">
+                <Border Background="AliceBlue" BorderBrush="Transparent" BorderThickness="2" CornerRadius="40,40,0,0" />
+                <Button x:Name="Close" Content="Button" HorizontalAlignment="Right" Margin="0,8,40.652,8" Width="21.693"/>
+                <Path Data="M0,9.999V0h9.998v9.999H0z M8.998,3H1v5.999h7.999V3z" Fill="White" Margin="0,8,40.652,8" Width="21.693" RenderTransformOrigin="10.158,0.444"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
