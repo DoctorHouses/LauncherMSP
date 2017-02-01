@@ -1,0 +1,23 @@
+﻿<Window x:Class="LauncherMinecraft.OptionsJava"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LauncherMinecraft"
+        mc:Ignorable="d"
+        Title="OptionsJava" Height="245.25" Width="308.25" Loaded="Chargement" Icon="Resources/ICON.jpg">
+    <Grid>
+        <Label x:Name="label" Content="Mémoire minimum de Java" HorizontalAlignment="Left" Margin="10,28,0,0" VerticalAlignment="Top" Width="139" FontSize="10"/>
+        <Label x:Name="label1" Content="Mémoire maximum de Java" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top" Width="139" FontSize="10"/>
+        <TextBox x:Name="JavaMin" HorizontalAlignment="Left" Height="19" Margin="155,32,0,0" TextWrapping="Wrap" Text="512" VerticalAlignment="Top" Width="101"/>
+        <TextBox x:Name="JavaMax" HorizontalAlignment="Left" Height="17" Margin="155,65,0,0" TextWrapping="Wrap" Text="1024" VerticalAlignment="Top" Width="101"/>
+        <Label x:Name="label2" Content="PermGen de Java" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" Width="139" FontSize="10"/>
+        <TextBox x:Name="PermGen" HorizontalAlignment="Left" Height="17" Margin="155,97,0,0" TextWrapping="Wrap" Text="128" VerticalAlignment="Top" Width="101"/>
+        <Button x:Name="Save" Content="Sauvegarder" HorizontalAlignment="Left" Margin="10,174,0,0" VerticalAlignment="Top" Width="120" Click="Save_Click"/>
+        <Button x:Name="Quit" Content="Annuler" HorizontalAlignment="Left" Margin="155,174,0,0" VerticalAlignment="Top" Width="127" Click="Quitter"/>
+        <TextBox x:Name="CheminJava" HorizontalAlignment="Left" Height="16" Margin="155,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" FontSize="10"/>
+        <Button x:Name="DialogTree" Content="..." HorizontalAlignment="Left" Margin="245,130,0,0" VerticalAlignment="Top" Width="11" RenderTransformOrigin="-0.293,-0.05" Click="OpenDialog" Height="16"/>
+        <Label x:Name="label3" Content="Chemin de Java&#xD;&#xA;(Pas obligatoire)" HorizontalAlignment="Left" Margin="10,123,0,0" VerticalAlignment="Top" Width="139" FontSize="10"/>
+
+    </Grid>
+</Window>
