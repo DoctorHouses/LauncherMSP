@@ -7,6 +7,30 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner">
 
+    <Window.Resources>
+        <Image x:Key="Close" Source="pack://siteoforigin:,,,/Resources/close.png" Height="50" Width="50" />
+        <Image x:Key="Max" Source="pack://siteoforigin:,,,/Resources/max.png" Height="50" Width="50" />
+        <Image x:Key="Min" Source="pack://siteoforigin:,,,/Resources/min.png" Height="50" Width="50" />
+        <Image x:Key="Restore" Source="pack://siteoforigin:,,,/Resources/restore.png" Height="50" Width="50" />
+        <Style x:Key="MyButton" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Border BorderBrush="Transparent" BorderThickness="2" CornerRadius="40,40,15,15">
         <Border.Background>
             <ImageBrush ImageSource="background.png"/>
@@ -15,10 +39,25 @@
             <Grid.Effect>
                 <DropShadowEffect/>
             </Grid.Effect>
-            <Grid x:Name="TitleBar" Height="40.742" Width="1049.377" Margin="0,-2,-3.977,0" VerticalAlignment="Top">
-                <Border Background="AliceBlue" BorderBrush="Transparent" BorderThickness="2" CornerRadius="40,40,0,0" />
-                <Button x:Name="Close" Content="Button" HorizontalAlignment="Right" Margin="0,8,40.652,8" Width="21.693"/>
-                <Path Data="M0,9.999V0h9.998v9.999H0z M8.998,3H1v5.999h7.999V3z" Fill="White" Margin="0,8,40.652,8" Width="21.693" RenderTransformOrigin="10.158,0.444"/>
+            <Grid x:Name="TitleBar" Margin="-1.666,-2,-2.312,0" VerticalAlignment="Top" MouseLeftButtonDown="DragClick" MouseLeftButtonUp="DragRelease" Height="40">
+                <Border Background="AliceBlue" BorderBrush="Transparent" BorderThickness="2" CornerRadius="40,40,0,0" Margin="0,0,0.377,-0.258" >
+                    <Image x:Name="image" HorizontalAlignment="Left" Margin="30.165,1,0,0" Width="34.712" Source="Resources/logo.png"/>
+                </Border>
+                <Button x:Name="close" Content="Button" HorizontalAlignment="Right" Margin="0,5.875,32.362,5.518" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Click="close_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/close.png" Stretch="UniformToFill"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="max" HorizontalAlignment="Right" Margin="0,5.875,68.38,5.518" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Click="max_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/max.png" Stretch="UniformToFill"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="min" Content="Button" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" HorizontalAlignment="Right" Margin="0,5.875,104.398,5.518" Style="{StaticResource MyButton}" Click="min_Click">
+                    <Button.Background>
+                        <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/min.png" Stretch="UniformToFill"/>
+                    </Button.Background>
+                </Button>
             </Grid>
         </Grid>
     </Border>

@@ -20,9 +20,55 @@ namespace LauncherMinecraftV3
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool _isMouseDown = false;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void close_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void max_Click(object sender, RoutedEventArgs e)
+        {
+            if(this.WindowState == WindowState.Maximized){
+                this.WindowState = WindowState.Normal;
+                ImageBrush image = new ImageBrush
+                {
+                    ImageSource = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/max.png")),
+                    Stretch = Stretch.UniformToFill
+                };
+                this.max.Background = image;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+                ImageBrush image = new ImageBrush
+                {
+                    ImageSource = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/restore.png")),
+                    Stretch = Stretch.UniformToFill
+                };
+                this.max.Background = image;
+            }
+        }
+
+        private void min_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void DragClick(object sender, MouseButtonEventArgs e)
+        {
+            this._isMouseDown = true;
+            this.DragMove();
+        }
+
+        private void DragRelease(object sender, MouseButtonEventArgs e)
+        {
+            this._isMouseDown = false;
         }
     }
 }
