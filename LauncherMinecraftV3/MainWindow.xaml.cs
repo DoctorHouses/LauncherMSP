@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -20,8 +21,6 @@ namespace LauncherMinecraftV3
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool _isMouseDown = false;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -62,13 +61,34 @@ namespace LauncherMinecraftV3
 
         private void DragClick(object sender, MouseButtonEventArgs e)
         {
-            this._isMouseDown = true;
             this.DragMove();
         }
 
-        private void DragRelease(object sender, MouseButtonEventArgs e)
+        private void btnLeftMenuHide_Click(object sender, RoutedEventArgs e)
         {
-            this._isMouseDown = false;
+            ShowHideMenu("sbHideLeftMenu", btnLeftMenuHide, btnLeftMenuShow, pnlLeftMenu);
+        }
+
+        private void btnLeftMenuShow_Click(object sender, RoutedEventArgs e)
+        {
+            ShowHideMenu("sbShowLeftMenu", btnLeftMenuHide, btnLeftMenuShow, pnlLeftMenu);
+        }
+
+        private void ShowHideMenu(string Storyboard, Button btnHide, Button btnShow, StackPanel pnl)
+        {
+            Storyboard sb = Resources[Storyboard] as Storyboard;
+            sb.Begin(pnl);
+
+            if (Storyboard.Contains("Show"))
+            {
+                btnHide.Visibility = System.Windows.Visibility.Visible;
+                btnShow.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else if (Storyboard.Contains("Hide"))
+            {
+                btnHide.Visibility = System.Windows.Visibility.Hidden;
+                btnShow.Visibility = System.Windows.Visibility.Visible;
+            }
         }
     }
 }
