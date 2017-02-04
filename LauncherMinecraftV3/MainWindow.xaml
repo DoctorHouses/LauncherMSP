@@ -9,7 +9,7 @@
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         x:Class="LauncherMinecraftV3.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner">
+        Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner" Initialized="RecuperationStorage" Closing="SaveStorage">
 
     <Window.Resources>
         <Image x:Key="Close" Source="pack://siteoforigin:,,,/Resources/close.png" Height="50" Width="50" />
@@ -139,8 +139,8 @@
             </Grid>
             <GroupBox x:Name="Connexion" Header="Connexion" Margin="0,0,35,10" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" Grid.RowSpan="2" HorizontalAlignment="Right" Width="349" Height="185" VerticalAlignment="Bottom">
                 <Grid HorizontalAlignment="Left" Height="125" Margin="5,5,0,0" VerticalAlignment="Top" Width="327">
-                    <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Margin="112,45,0,0" VerticalAlignment="Top" Width="204" ToolTip="Mot de passe associé au compte Minecraft"/>
-                    <TextBox x:Name="LoginTextBox" HorizontalAlignment="Left" Height="18" Margin="112,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" ToolTip="Login / Adresse mail de connexion du compte Minecraft"/>
+                    <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Margin="112,45,0,0" VerticalAlignment="Top" Width="204" ToolTip="Mot de passe associé au compte Minecraft" FontFamily="Courier New"/>
+                    <TextBox x:Name="LoginTextBox" HorizontalAlignment="Left" Height="18" Margin="112,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" ToolTip="Login / Adresse mail de connexion du compte Minecraft" FontFamily="Courier New"/>
                     <Label x:Name="LoginLabel" Content="Identifiant :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="92" Foreground="#FF1A831A" FontSize="12"/>
                     <Label x:Name="PasswordLabel" Content="Mot de passe :" HorizontalAlignment="Left" Margin="10,45,0,60" Width="92" Foreground="#FF1A831A" FontSize="10" d:LayoutOverrides="Height"/>
                     <Button x:Name="button" Content="Lancer le modpack" Height="40" Margin="16,0,11,-21" VerticalAlignment="Bottom" Style="{StaticResource MyButton}" Background="#FF007415" Foreground="Black">

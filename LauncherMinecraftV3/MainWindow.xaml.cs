@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -143,6 +144,58 @@ namespace LauncherMinecraftV3
                     "Il semblerait que le fichier config.xml est manquant ! Relancez l'application pour le régénérer",
                     "Une erreur s'est produire",
                     MessageBoxButton.OK, (Style)Resources["MessageBoxStyle1"]);
+            }
+        }
+
+        private void RecuperationStorage(object sender, EventArgs e)
+        {
+            List<String> logins = new List<string>();
+            IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForAssembly();
+            if (isolatedStorage.FileExists("Logins"))
+            {
+                StreamReader srReader = new StreamReader(new IsolatedStorageFileStream("Logins", FileMode.Open, isolatedStorage));
+                if (srReader != null)
+                {
+                    Souvenir.IsChecked = true;
+                    while (!srReader.EndOfStream)
+                    {
+                        logins.Add(srReader.ReadLine());
+                    }
+                    LoginTextBox.Text = logins[0];
+                    PasswordBox.Password = logins[1];
+                }
+            }
+        }
+
+        private void SaveStorage(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            bool check = Souvenir.IsChecked ?? false;
+            if (check)
+            {
+                Application.Current.Properties[0] = LoginTextBox.Text.Trim();
+                Application.Current.Properties[1] = PasswordBox.Password.Trim();
+                IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForAssembly();
+                StreamWriter srWriter = new StreamWriter(new IsolatedStorageFileStream("Logins", FileMode.Create, isolatedStorage));
+                if (Application.Current.Properties[0] != null && Application.Current.Properties[1] != null)
+                {
+                    //wriet to the isolated storage created in the above code section.
+                    srWriter.WriteLine(Application.Current.Properties[0].ToString());
+                    srWriter.WriteLine(Application.Current.Properties[1].ToString());
+                    srWriter.Flush();
+                    srWriter.Close();
+                }
+                else
+                {
+                    Xceed.Wpf.Toolkit.MessageBox.Show(
+        "Il faut que les champs Login et Mot de passe soient remplis pour se souvenir de vous !",
+        "Une erreur s'est produire",
+        MessageBoxButton.OK, (Style)Resources["MessageBoxStyle1"]);
+                }
+            }
+            else
+            {
+                IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForAssembly();
+                isolatedStorage.Remove();
             }
         }
     }
