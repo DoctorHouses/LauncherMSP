@@ -191,6 +191,7 @@
     <Content Include="Resources\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="ModpackList.xml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\max.png">

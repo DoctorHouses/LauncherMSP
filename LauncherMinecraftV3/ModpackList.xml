@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Liste>
+<Modpack>
+  <Nom>Test</Nom>
+  <Version>1.10.2</Version>
+  <Description>Test</Description>
+  <NbMods>1000</NbMods>
+</Modpack>
+<Modpack>
+  <Nom>Test 2</Nom>
+  <Version>1.7.10</Version>
+  <Description>Test 2</Description>
+  <NbMods>100</NbMods>
+</Modpack>
+</Liste>
