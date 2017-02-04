@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:LauncherMinecraftV3"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         x:Class="LauncherMinecraftV3.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner">
@@ -39,6 +40,33 @@
         <Storyboard x:Key="sbHideLeftMenu">
             <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-8,0,0,0" To="-300,0,0,0" AccelerationRatio=".9" Duration="0:0:1" />
         </Storyboard>
+        <Style x:Key="ButtonStyleMB" TargetType="Button">
+            <Setter Property="Background" Value="#FF007415"></Setter>
+            <Setter Property="FontFamily" Value="Minecrafter"></Setter>
+            <Setter Property="Foreground" Value="Black"></Setter>
+            <Setter Property="Height" Value="20"></Setter>
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="MessageBoxStyle1" TargetType="{x:Type toolkit:MessageBox}">
+            <Setter Property="OkButtonStyle" Value="{StaticResource ButtonStyleMB}" />
+            <Setter Property="WindowBackground" Value="#FF363636"></Setter>
+            <Setter Property="Background" Value="#FF363636"></Setter>
+        </Style>
     </Window.Resources>
 
     <Border BorderBrush="Transparent" BorderThickness="2" CornerRadius="40,40,15,15">
@@ -53,13 +81,16 @@
             <Grid.Effect>
                 <DropShadowEffect/>
             </Grid.Effect>
-            <wpf:ChromiumWebBrowser Grid.Row="0" Address="http://mcupdate.tumblr.com/" Margin="53,61,408,34" Grid.RowSpan="2" />
+            <wpf:ChromiumWebBrowser Grid.Row="0" Address="http://mcupdate.tumblr.com/" Margin="53,61,408,34" Grid.RowSpan="2" d:IsLocked="True" />
             <StackPanel Panel.ZIndex="2" x:Name="pnlLeftMenu" Orientation="Horizontal" Height="500" HorizontalAlignment="Left" Margin="-300,97.8,0,15.7" d:IsLocked="True">
                 <Border BorderBrush="#FF12831C" BorderThickness="2" Width="300" Background="#FF363636" CornerRadius="0,6,6,0" />
-                <Grid>
+                <Grid d:IsLocked="True">
+                    <Grid.DataContext>
+                        <XmlDataProvider Source="config.xml" XPath="config"/>
+                    </Grid.DataContext>
                     <GroupBox x:Name="Serveur" Header="Serveur" HorizontalAlignment="Left" Margin="-290,198.16,0,205.547" Width="284.005" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" d:IsLocked="True"/>
                     <GroupBox x:Name="JavaGB" Header="Java" Height="169.7" Margin="-290,9.527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="284.005" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" d:IsLocked="True"/>
-                    <Button x:Name="ParcourirJava" Content="Parcourir" Height="21.926" Margin="-103.686,138.533,0,0" VerticalAlignment="Top" Width="89.383" HorizontalAlignment="Left" Foreground="#FF0B0C0B" Background="#FF007415" FontFamily="Minecrafter" d:IsLocked="True"/>
+                    <Button x:Name="ParcourirJava" Content="Parcourir" Height="21.926" Margin="-103.686,138.533,0,0" VerticalAlignment="Top" Width="89.383" HorizontalAlignment="Left" Foreground="#FF0B0C0B" Background="#FF007415" FontFamily="Minecrafter" Click="ParcourirJava_Click" d:IsLocked="True"/>
                     <Button x:Name="btnLeftMenuHide" Width="48" Height="48" Click="btnLeftMenuHide_Click" Visibility="Hidden" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Margin="-5.996,176,5.994,176" d:IsLocked="True">
                         <Button.Background>
                             <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/open_panel.png" Stretch="Fill"/>
@@ -70,21 +101,21 @@
                             <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/close_panel.png" Stretch="Fill"/>
                         </Button.Background>
                     </Button>
-                    <Button x:Name="SaveSettings" Content="Sauvegarder" Height="49.5" Margin="-226.5,0,115.123,29.3" VerticalAlignment="Bottom" FontFamily="Minecrafter" Background="#FF007415" d:IsLocked="True">
+                    <Button x:Name="SaveSettings" Content="Sauvegarder" Height="49.5" Margin="-226.5,0,115.123,29.3" VerticalAlignment="Bottom" FontFamily="Minecrafter" Background="#FF007415" Click="SaveSettings_Click" d:IsLocked="True">
                         <Button.Effect>
                             <DropShadowEffect/>
                         </Button.Effect>
                     </Button>
-                    <TextBox x:Name="JavaMin" Height="23.5" Margin="-60.686,35.7,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Width="46.383" d:IsLocked="True"/>
-                    <TextBox x:Name="JavaMax" Height="25" Margin="-60.686,64.2,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Width="46.383" d:IsLocked="True"/>
+                    <TextBox x:Name="JavaMin" Height="23.5" Margin="-60.686,35.7,0,0" TextWrapping="Wrap" Text="{Binding XPath=./Java/Min}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="46.383" d:IsLocked="True"/>
+                    <TextBox x:Name="JavaMax" Height="25" Margin="-60.686,64.2,0,0" TextWrapping="Wrap" Text="{Binding XPath=./Java/Max}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="46.383" d:IsLocked="True"/>
                     <Label x:Name="JavaMinLabel" Content="Memoire minimum allouee" HorizontalAlignment="Left" Height="25" Margin="-284.501,35.7,0,0" VerticalAlignment="Top" Width="217.377" Foreground="#FF1A831A" FontFamily="Minecrafter" d:IsLocked="True"/>
                     <Label x:Name="JavaMaxLabel" Content="Memoire maximum allouee" HorizontalAlignment="Left" Height="23.5" Margin="-284.501,65.7,0,0" VerticalAlignment="Top" Width="217.377" Foreground="#FF1A831A" FontFamily="Minecrafter" d:IsLocked="True"/>
-                    <TextBox x:Name="JavaPerm" Height="25" Margin="-60.686,94.2,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Width="46.383" d:IsLocked="True"/>
+                    <TextBox x:Name="JavaPerm" Height="25" Margin="-60.686,94.2,0,0" TextWrapping="Wrap" Text="{Binding XPath=./Java/Perm}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="46.383" d:IsLocked="True"/>
                     <Label x:Name="JavaPermLabel" Content="Permgen(Desuet avec Java 8)" HorizontalAlignment="Left" Height="25" Margin="-284.501,94.2,0,0" VerticalAlignment="Top" Width="218.815" Foreground="#FF1A831A" FontFamily="Minecrafter" d:IsLocked="True"/>
                     <TextBox x:Name="JavaChemin" Visibility="Hidden" Height="9.666" Margin="-210.835,163.867,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="96.666" HorizontalAlignment="Left" d:IsLocked="True"/>
                     <TextBlock x:Name="JavaCheminLabel" Height="50.665" Margin="-278.834,122.868,0,0" Text="Chemin vers Java (Detection automatique - Utilise en cas de soucis)" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" HorizontalAlignment="Left" Width="170.148" FontFamily="Minecrafter" Foreground="#FF1A831A" d:IsLocked="True"/>
                     <Label x:Name="ServeurLabel" Content="Serveur pour les modpacks" Height="22" Margin="-278.834,226,0,0" VerticalAlignment="Top" Width="244" HorizontalAlignment="Left" Foreground="#FF1A831A" FontFamily="Minecrafter" d:IsLocked="True"/>
-                    <TextBox x:Name="ServeurModPack" Margin="-272.669,0,0,226.334" TextWrapping="Wrap" Text="" Width="252" HorizontalAlignment="Left" Height="20.666" VerticalAlignment="Bottom" d:IsLocked="True"/>
+                    <TextBox x:Name="ServeurModPack" Margin="-272.669,0,0,226.334" TextWrapping="Wrap" Text="{Binding XPath=./Server/Url}" Width="252" HorizontalAlignment="Left" Height="20.666" VerticalAlignment="Bottom" d:IsLocked="True"/>
                 </Grid>
             </StackPanel>
             <Grid x:Name="TitleBar" Margin="-1.666,-2,-2.312,0" VerticalAlignment="Top" MouseLeftButtonDown="DragClick" Height="40" d:IsLocked="True">
@@ -106,17 +137,18 @@
                     </Button.Background>
                 </Button>
             </Grid>
-            <GroupBox x:Name="Connexion" Header="Connexion" Margin="0,0,35,34" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" Grid.RowSpan="2" HorizontalAlignment="Right" Width="349" Height="152" VerticalAlignment="Bottom">
+            <GroupBox x:Name="Connexion" Header="Connexion" Margin="0,0,35,10" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" Grid.RowSpan="2" HorizontalAlignment="Right" Width="349" Height="185" VerticalAlignment="Bottom">
                 <Grid HorizontalAlignment="Left" Height="125" Margin="5,5,0,0" VerticalAlignment="Top" Width="327">
                     <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Margin="112,45,0,0" VerticalAlignment="Top" Width="204" ToolTip="Mot de passe associé au compte Minecraft"/>
                     <TextBox x:Name="LoginTextBox" HorizontalAlignment="Left" Height="18" Margin="112,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" ToolTip="Login / Adresse mail de connexion du compte Minecraft"/>
                     <Label x:Name="LoginLabel" Content="Identifiant :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="92" Foreground="#FF1A831A" FontSize="12"/>
                     <Label x:Name="PasswordLabel" Content="Mot de passe :" HorizontalAlignment="Left" Margin="10,45,0,60" Width="92" Foreground="#FF1A831A" FontSize="10" d:LayoutOverrides="Height"/>
-                    <Button x:Name="button" Content="Lancer le modpack" Height="39.5" Margin="16.5,0,11,10" VerticalAlignment="Bottom" Style="{StaticResource MyButton}" Background="#FF007415" Foreground="Black">
+                    <Button x:Name="button" Content="Lancer le modpack" Height="40" Margin="16,0,11,-21" VerticalAlignment="Bottom" Style="{StaticResource MyButton}" Background="#FF007415" Foreground="Black">
                         <Button.Effect>
                             <DropShadowEffect Color="#FF114414"/>
                         </Button.Effect>
                     </Button>
+                    <CheckBox x:Name="Souvenir" Content="Se souvenir de moi" HorizontalAlignment="Left" Margin="68,77,0,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
                 </Grid>
             </GroupBox>
             <GroupBox x:Name="Modpack" Header="Modpack" HorizontalAlignment="Right" Margin="0,60.667,35.067,136.873" Width="349" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" d:IsLocked="True" >

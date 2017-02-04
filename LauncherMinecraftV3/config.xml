@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <Java>
+    <Min>512</Min>
+    <Max>3456</Max>
+    <Perm>256</Perm>
+    <Path></Path>
+  </Java>
+  <Server>
+    <Url>http://mcpatch.more-salt-plz.fr/Client/</Url>
+  </Server>
+</config>
