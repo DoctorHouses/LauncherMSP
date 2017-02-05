@@ -9,7 +9,7 @@
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         x:Class="LauncherMinecraftV3.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner" Initialized="RecuperationStorage" Closing="SaveStorage">
+        Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner" Initialized="RecuperationStorage" Closing="SaveStorage" SizeChanged="Resize">
 
     <Window.Resources>
         <Image x:Key="Close" Source="pack://siteoforigin:,,,/Resources/close.png" Height="50" Width="50" />
@@ -67,6 +67,7 @@
             <Setter Property="WindowBackground" Value="#FF363636"></Setter>
             <Setter Property="Background" Value="#FF363636"></Setter>
         </Style>
+        <local:StringFormatConverter x:Key="Converter" />
     </Window.Resources>
 
     <Border BorderBrush="Transparent" BorderThickness="2" CornerRadius="40,40,15,15">
@@ -137,7 +138,7 @@
                     </Button.Background>
                 </Button>
             </Grid>
-            <GroupBox x:Name="Connexion" Header="Connexion" Margin="0,0,35,10" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" Grid.RowSpan="2" HorizontalAlignment="Right" Width="349" Height="185" VerticalAlignment="Bottom">
+            <GroupBox x:Name="Connexion" Header="Connexion" Margin="0,0,35,6" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" Grid.RowSpan="2" HorizontalAlignment="Right" Width="349" Height="185" VerticalAlignment="Bottom">
                 <Grid HorizontalAlignment="Left" Height="125" Margin="5,5,0,0" VerticalAlignment="Top" Width="327">
                     <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Margin="112,45,0,0" VerticalAlignment="Top" Width="204" ToolTip="Mot de passe associé au compte Minecraft" FontFamily="Courier New"/>
                     <TextBox x:Name="LoginTextBox" HorizontalAlignment="Left" Height="18" Margin="112,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" ToolTip="Login / Adresse mail de connexion du compte Minecraft" FontFamily="Courier New"/>
@@ -151,7 +152,7 @@
                     <CheckBox x:Name="Souvenir" Content="Se souvenir de moi" HorizontalAlignment="Left" Margin="68,77,0,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="Modpack" Header="Modpack" HorizontalAlignment="Right" Margin="0,61,35,118" Width="349" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" >
+            <GroupBox x:Name="Modpack" Header="Modpack" HorizontalAlignment="Right" Margin="0,46,35,114" Width="349" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" >
                 <Grid Margin="0,0,-12,-2.334">
                     <Grid.DataContext>
                         <XmlDataProvider Source="ModpackList.xml" XPath="/Liste/Modpack"/>
@@ -167,15 +168,17 @@
                     </ComboBox>
                     <TextBox x:Name="VersionMc" HorizontalAlignment="Right" Margin="0,86.389,25.667,0" TextWrapping="Wrap" Text="{Binding XPath=./Version}" Width="75.5" Height="23" VerticalAlignment="Top" IsReadOnly="True"/>
                     <Label x:Name="DescriptionLabel" Content="Description du modpack" Height="27" Margin="10,118,62,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
-                    <RichTextBox x:Name="DescriptionModpack" Margin="60,150,26,47.334" IsReadOnly="True">
+                    <RichTextBox x:Name="DescriptionModpack" Margin="60,150,26,0" IsReadOnly="True" Height="153" VerticalAlignment="Top">
                         <FlowDocument>
                             <Paragraph>
                                 <Run Text="{Binding XPath=./Description}"/>
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
-                    <Label x:Name="NbModLabel" Content="Nombre de mods" Height="27" Margin="10,378,151,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
-                    <TextBox x:Name="NbMod" HorizontalAlignment="Left" Height="23" Margin="198,381,0,0" TextWrapping="Wrap" Text="{Binding XPath=./NbMods}" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+                    <Label x:Name="NbModLabel" Content="Nombre de mods" Height="27" Margin="10,323,151,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
+                    <TextBox x:Name="NbMod" HorizontalAlignment="Left" Height="23" Margin="198,323,0,0" TextWrapping="Wrap" Text="{Binding XPath=./NbMods}" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+                    <Label x:Name="UpdateLabel" Content="Derniere mise a jour" Height="27" Margin="10,355,117,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
+                    <TextBox x:Name="Update" HorizontalAlignment="Left" Height="23" Margin="106,386,0,0" TextWrapping="Wrap" Text="{Binding XPath=./LastUpdate,Converter={StaticResource Converter}}"  VerticalAlignment="Top" Width="212" IsReadOnly="True"/>
                 </Grid>
             </GroupBox>
         </Grid>

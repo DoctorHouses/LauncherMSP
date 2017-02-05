@@ -2,20 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml;
 using Application = System.Windows.Application;
 using Button = System.Windows.Controls.Button;
@@ -25,7 +18,7 @@ namespace LauncherMinecraftV3
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -39,35 +32,32 @@ namespace LauncherMinecraftV3
 
         private void max_Click(object sender, RoutedEventArgs e)
         {
-            if(this.WindowState == WindowState.Maximized){
-                this.WindowState = WindowState.Normal;
-                ImageBrush image = new ImageBrush
-                {
-                    ImageSource = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/max.png")),
-                    Stretch = Stretch.UniformToFill
-                };
-                this.max.Background = image;
+            if(WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
             }
             else
             {
                 this.WindowState = WindowState.Maximized;
-                ImageBrush image = new ImageBrush
-                {
-                    ImageSource = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/restore.png")),
-                    Stretch = Stretch.UniformToFill
-                };
-                this.max.Background = image;
             }
         }
 
         private void min_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
 
         private void DragClick(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+                DragMove();
+            }
+            else
+            {
+                DragMove();
+            }     
         }
 
         private void btnLeftMenuHide_Click(object sender, RoutedEventArgs e)
@@ -196,6 +186,29 @@ namespace LauncherMinecraftV3
             {
                 IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForAssembly();
                 isolatedStorage.Remove();
+            }
+        }
+
+        private void Resize(object sender, SizeChangedEventArgs e)
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Maximized;
+                ImageBrush im = new ImageBrush
+                {
+                    ImageSource = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/restore.png")),
+                    Stretch = Stretch.UniformToFill
+                };
+                max.Background = im;
+            }
+            else
+            {
+                ImageBrush im = new ImageBrush
+                {
+                    ImageSource = new BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/max.png")),
+                    Stretch = Stretch.UniformToFill
+                };
+                this.max.Background = im;
             }
         }
     }
