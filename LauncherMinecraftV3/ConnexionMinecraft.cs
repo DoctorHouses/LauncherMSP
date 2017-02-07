@@ -7,13 +7,13 @@ using System.Net.Sockets;
 
 namespace LauncherMinecraftV3
 {
-    class ConnexionMinecraft
+    internal class ConnexionMinecraft
     {
         public enum LoginResult
         {
             OtherError,
             ServiceUnavailable,
-            SSLError,
+            SslError,
             Success,
             WrongPassword,
             AccountMigrated,
@@ -21,7 +21,7 @@ namespace LauncherMinecraftV3
             LoginRequired,
             InvalidToken,
             NullError
-        };
+        }
 
         /// <summary>
         /// Allows to login to a premium Minecraft account using the Yggdrasil authentication scheme.
@@ -31,76 +31,60 @@ namespace LauncherMinecraftV3
         /// <param name="accesstoken">Will contain the access token returned by Minecraft.net, if the login is successful</param>
         /// <param name="clienttoken">Will contain the client token generated before sending to Minecraft.net</param>
         /// <param name="uuid">Will contain the player's PlayerID, needed for multiplayer</param>
+        /// <param name="session"></param>
         /// <returns>Returns the status of the login (Success, Failure, etc.)</returns>
-
         public static LoginResult GetLogin(string user, string pass, out SessionToken session)
         {
-            session = new SessionToken() {ClientID = Guid.NewGuid().ToString().Replace("-", "")};
+            session = new SessionToken {ClientId = Guid.NewGuid().ToString().Replace("-", "")};
 
             try
             {
                 string result = "";
 
-                string json_request = "{\"agent\": { \"name\": \"Minecraft\", \"version\": 1 }, \"username\": \"" +
-                                      jsonEncode(user) + "\", \"password\": \"" + jsonEncode(pass) +
-                                      "\", \"clientToken\": \"" + jsonEncode(session.ClientID) + "\" }";
-                int code = doHTTPSPost("authserver.mojang.com", "/authenticate", json_request, ref result);
-                if (code == 200)
+                string jsonRequest = "{\"agent\": { \"name\": \"Minecraft\", \"version\": 1 }, \"username\": \"" +
+                                      JsonEncode(user) + "\", \"password\": \"" + JsonEncode(pass) +
+                                      "\", \"clientToken\": \"" + JsonEncode(session.ClientId) + "\" }";
+                int code = DoHttpsPost("authserver.mojang.com", "/authenticate", jsonRequest, ref result);
+                switch (code)
                 {
-                    if (result.Contains("availableProfiles\":[]}"))
-                    {
-                        return LoginResult.NotPremium;
-                    }
-                    else
-                    {
-                        string[] temp = result.Split(new string[] {"accessToken\":\""},
+                    case 200:
+                        if (result.Contains("availableProfiles\":[]}"))
+                        {
+                            return LoginResult.NotPremium;
+                        }
+                        string[] temp = result.Split(new[] {"accessToken\":\""},
                             StringSplitOptions.RemoveEmptyEntries);
                         if (temp.Length >= 2)
                         {
-                            session.ID = temp[1].Split('"')[0];
+                            session.Id = temp[1].Split('"')[0];
                         }
-                        temp = result.Split(new string[] {"name\":\""}, StringSplitOptions.RemoveEmptyEntries);
+                        temp = result.Split(new[] {"name\":\""}, StringSplitOptions.RemoveEmptyEntries);
                         if (temp.Length >= 2)
                         {
                             session.PlayerName = temp[1].Split('"')[0];
                         }
-                        temp = result.Split(new string[] {"availableProfiles\":[{\"id\":\""},
+                        temp = result.Split(new[] {"availableProfiles\":[{\"id\":\""},
                             StringSplitOptions.RemoveEmptyEntries);
                         if (temp.Length >= 2)
                         {
-                            session.PlayerID = temp[1].Split('"')[0];
+                            session.PlayerId = temp[1].Split('"')[0];
                         }
                         return LoginResult.Success;
-                    }
-                }
-                else if (code == 403)
-                {
-                    if (result.Contains("UserMigratedException"))
-                    {
-                        return LoginResult.AccountMigrated;
-                    }
-                    else return LoginResult.WrongPassword;
-                }
-                else if (code == 503)
-                {
-                    return LoginResult.ServiceUnavailable;
-                }
-                else
-                {
-                    return LoginResult.OtherError;
+                    case 403:
+                        return result.Contains("UserMigratedException") ? LoginResult.AccountMigrated : LoginResult.WrongPassword;
+                    case 503:
+                        return LoginResult.ServiceUnavailable;
+                    default:
+                        return LoginResult.OtherError;
                 }
             }
             catch (System.Security.Authentication.AuthenticationException)
             {
-                return LoginResult.SSLError;
+                return LoginResult.SslError;
             }
             catch (System.IO.IOException e)
             {
-                if (e.Message.Contains("authentication"))
-                {
-                    return LoginResult.SSLError;
-                }
-                else return LoginResult.OtherError;
+                return e.Message.Contains("authentication") ? LoginResult.SslError : LoginResult.OtherError;
             }
             catch
             {
@@ -117,18 +101,20 @@ namespace LauncherMinecraftV3
         /// <param name="result">Request result</param>
         /// <returns>HTTP Status code</returns>
 
-        private static int doHTTPSPost(string host, string endpoint, string request, ref string result)
+        private static int DoHttpsPost(string host, string endpoint, string request, ref string result)
         {
-            List<String> http_request = new List<string>();
-            http_request.Add("POST " + endpoint + " HTTP/1.1");
-            http_request.Add("Host: " + host);
+            List<string> httpRequest = new List<string>
+            {
+                "POST " + endpoint + " HTTP/1.1",
+                "Host: " + host,
+                "Content-Type: application/json",
+                "Content-Length: " + Encoding.ASCII.GetBytes(request).Length,
+                "Connection: close",
+                "",
+                request
+            };
             //http_request.Add("User-Agent: MCC/" + Program.Version);
-            http_request.Add("Content-Type: application/json");
-            http_request.Add("Content-Length: " + Encoding.ASCII.GetBytes(request).Length);
-            http_request.Add("Connection: close");
-            http_request.Add("");
-            http_request.Add(request);
-            return doHTTPSRequest(http_request, host, ref result);
+            return DoHttpsRequest(httpRequest, host, ref result);
         }
 
 
@@ -141,7 +127,7 @@ namespace LauncherMinecraftV3
         /// <param name="result">Request result</param>
         /// <returns>HTTP Status code</returns>
 
-        private static int doHTTPSRequest(List<string> headers, string host, ref string result)
+        private static int DoHttpsRequest(List<string> headers, string host, ref string result)
         {
             string postResult = null;
             int statusCode = 520;
@@ -150,13 +136,13 @@ namespace LauncherMinecraftV3
                 TcpClient client = new TcpClient(host, 443);
                 SslStream stream = new SslStream(client.GetStream());
                 stream.AuthenticateAsClient(host);
-                stream.Write(Encoding.ASCII.GetBytes(String.Join("\r\n", headers.ToArray())));
+                stream.Write(Encoding.ASCII.GetBytes(string.Join("\r\n", headers.ToArray())));
                 System.IO.StreamReader sr = new System.IO.StreamReader(stream);
-                string raw_result = sr.ReadToEnd();
-                if (raw_result.StartsWith("HTTP/1.1"))
+                string rawResult = sr.ReadToEnd();
+                if (rawResult.StartsWith("HTTP/1.1"))
                 {
-                    postResult = raw_result.Substring(raw_result.IndexOf("\r\n\r\n") + 4);
-                    statusCode = Int32.Parse(raw_result.Split(' ')[1]);
+                    postResult = rawResult.Substring(rawResult.IndexOf("\r\n\r\n", StringComparison.Ordinal) + 4);
+                    statusCode = int.Parse(rawResult.Split(' ')[1]);
                 }
                 else statusCode = 520; //Web server is returning an unknown error
             }, TimeSpan.FromSeconds(30));
@@ -171,14 +157,14 @@ namespace LauncherMinecraftV3
         /// <param name="text">Source text</param>
         /// <returns>Encoded text</returns>
 
-        private static string jsonEncode(string text)
+        private static string JsonEncode(string text)
         {
             StringBuilder result = new StringBuilder();
             foreach (char c in text)
             {
-                if ((c >= '0' && c <= '9') ||
-                    (c >= 'a' && c <= 'z') ||
-                    (c >= 'A' && c <= 'Z'))
+                if (c >= '0' && c <= '9' ||
+                    c >= 'a' && c <= 'z' ||
+                    c >= 'A' && c <= 'Z')
                 {
                     result.Append(c);
                 }
@@ -199,33 +185,33 @@ namespace LauncherMinecraftV3
                 return environmentPath;
             }
 
-            const string JAVA_KEY = "SOFTWARE\\JavaSoft\\Java Runtime Environment\\";
+            const string javaKey = "SOFTWARE\\JavaSoft\\Java Runtime Environment\\";
 
-            var localKey = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry32);
-            using (var rk = localKey.OpenSubKey(JAVA_KEY))
+            RegistryKey localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+            using (RegistryKey rk = localKey.OpenSubKey(javaKey))
             {
                 if (rk != null)
                 {
                     string currentVersion = rk.GetValue("CurrentVersion").ToString();
-                    using (var key = rk.OpenSubKey(currentVersion))
+                    using (RegistryKey key = rk.OpenSubKey(currentVersion))
                     {
-                        return key.GetValue("JavaHome").ToString();
+                        if (key != null) return key.GetValue("JavaHome").ToString();
                     }
                 }
             }
 
-            localKey = RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry64);
-            using (var rk = localKey.OpenSubKey(JAVA_KEY))
+            localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
+            using (RegistryKey rk = localKey.OpenSubKey(javaKey))
             {
-                if (rk != null)
+                if (rk == null) return null;
+                string currentVersion = rk.GetValue("CurrentVersion").ToString();
+                using (RegistryKey key = rk.OpenSubKey(currentVersion))
                 {
-                    string currentVersion = rk.GetValue("CurrentVersion").ToString();
-                    using (var key = rk.OpenSubKey(currentVersion))
-                    {
-                        return key.GetValue("JavaHome").ToString();
-                    }
+                    if (key != null) return key.GetValue("JavaHome").ToString();
                 }
             }
+
+
 
             return null;
         }

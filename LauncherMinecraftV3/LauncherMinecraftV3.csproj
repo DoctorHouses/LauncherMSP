@@ -127,7 +127,9 @@
     </ApplicationDefinition>
     <Compile Include="AutoTimeOut.cs" />
     <Compile Include="Converter.cs" />
+    <Compile Include="Patcher.cs" />
     <Compile Include="SessionToken.cs" />
+    <Compile Include="UpdateMinecraft.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -195,9 +197,6 @@
     <Content Include="Resources\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="ModpackList.xml">
-      <SubType>Designer</SubType>
-    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\max.png">

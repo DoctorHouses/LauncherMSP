@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
-using System.Xml;
 
 namespace LauncherMinecraftV3
 {
@@ -22,22 +17,16 @@ namespace LauncherMinecraftV3
     [ValueConversion(typeof(object), typeof(string))]
     public class StringFormatConverter : BaseConverter, IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
-            {
-                var time = DateTime.ParseExact((string) value, "yyyy-MM-ddTHH:mm:ssZ",
-                    System.Globalization.CultureInfo.InvariantCulture);
-                return time.ToString(CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                return null;
-            }
+            if (value == null) return null;
+            DateTime time = DateTime.ParseExact((string) value, "yyyy-MM-ddTHH:mm:ssZ",
+                CultureInfo.InvariantCulture);
+            return time.ToString(CultureInfo.InvariantCulture);
         }
 
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;
         }

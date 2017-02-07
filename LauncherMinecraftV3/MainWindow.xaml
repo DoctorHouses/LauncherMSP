@@ -4,69 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LauncherMinecraftV3"
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
-        xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
-        x:Class="LauncherMinecraftV3.MainWindow"
+    xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+    x:Class="LauncherMinecraftV3.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner" Initialized="RecuperationStorage" Closing="SaveStorage" SizeChanged="Resize">
+        Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner" Initialized="RecuperationStorage" Closing="SaveStorage" SizeChanged="Resize" Loaded="ListeMods">
 
     <Window.Resources>
         <Image x:Key="Close" Source="pack://siteoforigin:,,,/Resources/close.png" Height="50" Width="50" />
         <Image x:Key="Max" Source="pack://siteoforigin:,,,/Resources/max.png" Height="50" Width="50" />
         <Image x:Key="Min" Source="pack://siteoforigin:,,,/Resources/min.png" Height="50" Width="50" />
         <Image x:Key="Restore" Source="pack://siteoforigin:,,,/Resources/restore.png" Height="50" Width="50" />
-        <Style x:Key="MyButton" TargetType="{x:Type Button}">
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.8" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Storyboard x:Key="sbShowLeftMenu" >
+        <Storyboard x:Key="SbShowLeftMenu" >
             <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-300,0,0,0" To="-8,0,0,0" DecelerationRatio=".9" Duration="0:0:1" />
         </Storyboard>
-        <Storyboard x:Key="sbHideLeftMenu">
+        <Storyboard x:Key="SbHideLeftMenu">
             <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-8,0,0,0" To="-300,0,0,0" AccelerationRatio=".9" Duration="0:0:1" />
         </Storyboard>
-        <Style x:Key="ButtonStyleMB" TargetType="Button">
-            <Setter Property="Background" Value="#FF007415"></Setter>
-            <Setter Property="FontFamily" Value="Minecrafter"></Setter>
-            <Setter Property="Foreground" Value="Black"></Setter>
-            <Setter Property="Height" Value="20"></Setter>
-            <Setter Property="OverridesDefaultStyle" Value="True" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Opacity" Value="0.8" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="MessageBoxStyle1" TargetType="{x:Type toolkit:MessageBox}">
-            <Setter Property="OkButtonStyle" Value="{StaticResource ButtonStyleMB}" />
-            <Setter Property="WindowBackground" Value="#FF363636"></Setter>
-            <Setter Property="Background" Value="#FF363636"></Setter>
-        </Style>
         <local:StringFormatConverter x:Key="Converter" />
     </Window.Resources>
 
@@ -83,21 +36,21 @@
                 <DropShadowEffect/>
             </Grid.Effect>
             <wpf:ChromiumWebBrowser Grid.Row="0" Address="http://mcupdate.tumblr.com/" Margin="53,61,408,34" Grid.RowSpan="2" d:IsLocked="True" />
-            <StackPanel Panel.ZIndex="2" x:Name="pnlLeftMenu" Orientation="Horizontal" Height="500" HorizontalAlignment="Left" Margin="-300,97.8,0,15.7" d:IsLocked="True">
+            <StackPanel Grid.Row="0" Panel.ZIndex="2" x:Name="PnlLeftMenu" Orientation="Horizontal" Height="500" HorizontalAlignment="Left" Margin="-300,97.8,0,15.7" d:IsLocked="True">
                 <Border BorderBrush="#FF12831C" BorderThickness="2" Width="300" Background="#FF363636" CornerRadius="0,6,6,0" />
                 <Grid d:IsLocked="True">
                     <Grid.DataContext>
                         <XmlDataProvider Source="config.xml" XPath="config"/>
                     </Grid.DataContext>
                     <GroupBox x:Name="Serveur" Header="Serveur" HorizontalAlignment="Left" Margin="-290,198.16,0,205.547" Width="284.005" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" d:IsLocked="True"/>
-                    <GroupBox x:Name="JavaGB" Header="Java" Height="169.7" Margin="-290,9.527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="284.005" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" d:IsLocked="True"/>
+                    <GroupBox x:Name="JavaGb" Header="Java" Height="169.7" Margin="-290,9.527,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="284.005" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" d:IsLocked="True"/>
                     <Button x:Name="ParcourirJava" Content="Parcourir" Height="21.926" Margin="-103.686,138.533,0,0" VerticalAlignment="Top" Width="89.383" HorizontalAlignment="Left" Foreground="#FF0B0C0B" Background="#FF007415" FontFamily="Minecrafter" Click="ParcourirJava_Click" d:IsLocked="True"/>
-                    <Button x:Name="btnLeftMenuHide" Width="48" Height="48" Click="btnLeftMenuHide_Click" Visibility="Hidden" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Margin="-5.996,176,5.994,176" d:IsLocked="True">
+                    <Button x:Name="BtnLeftMenuHide" Width="48" Height="48" Click="btnLeftMenuHide_Click" Visibility="Hidden" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Margin="-5.996,176,5.994,176" d:IsLocked="True">
                         <Button.Background>
                             <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/open_panel.png" Stretch="Fill"/>
                         </Button.Background>
                     </Button>
-                    <Button x:Name="btnLeftMenuShow" Width="48" Height="48" Click="btnLeftMenuShow_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource MyButton}" Margin="-5.995,176,5.994,176" d:IsLocked="True">
+                    <Button x:Name="BtnLeftMenuShow" Width="48" Height="48" Click="btnLeftMenuShow_Click" Foreground="{x:Null}" BorderBrush="{x:Null}" Style="{StaticResource MyButton}" Margin="-5.995,176,5.994,176" d:IsLocked="True">
                         <Button.Background>
                             <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/close_panel.png" Stretch="Fill"/>
                         </Button.Background>
@@ -119,32 +72,33 @@
                     <TextBox x:Name="ServeurModPack" Margin="-272.669,0,0,226.334" TextWrapping="Wrap" Text="{Binding XPath=./Server/Url}" Width="252" HorizontalAlignment="Left" Height="20.666" VerticalAlignment="Bottom" d:IsLocked="True"/>
                 </Grid>
             </StackPanel>
-            <Grid x:Name="TitleBar" Margin="-1.666,-2,-2.312,0" VerticalAlignment="Top" MouseLeftButtonDown="DragClick" Height="40" d:IsLocked="True">
+            <Grid Grid.Row="0" x:Name="TitleBar" Margin="-1.666,-2,-2.312,0" VerticalAlignment="Top" MouseLeftButtonDown="DragClick" Height="40" d:IsLocked="True">
                 <Border Background="AliceBlue" BorderBrush="Transparent" BorderThickness="2" CornerRadius="40,40,0,0" Margin="0,0,0.377,-0.258" />
-                <Image x:Name="image" HorizontalAlignment="Left" Margin="30,1,0,0" Width="34" Source="pack://siteoforigin:,,,/Resources/logo.png"/>
-                <Button x:Name="close" Content="Button" HorizontalAlignment="Right" Margin="0,5.875,32.362,5.518" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Click="close_Click">
+                <Image x:Name="Image" HorizontalAlignment="Left" Margin="30,1,0,0" Width="34" Source="pack://siteoforigin:,,,/Resources/logo.png"/>
+                <Button x:Name="CloseApp" Content="Button" HorizontalAlignment="Right" Margin="0,5.875,32.362,5.518" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Click="close_Click">
                     <Button.Background>
                         <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/close.png" Stretch="UniformToFill"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="max" HorizontalAlignment="Right" Margin="0,5.875,68.38,5.518" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Click="max_Click">
+                <Button x:Name="Max" HorizontalAlignment="Right" Margin="0,5.875,68.38,5.518" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" Style="{StaticResource MyButton}" Click="max_Click">
                     <Button.Background>
                         <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/max.png" Stretch="UniformToFill"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="min" Content="Button" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" HorizontalAlignment="Right" Margin="0,5.875,104.398,5.518" Style="{StaticResource MyButton}" Click="min_Click">
+                <Button x:Name="Min" Content="Button" Width="36.018" BorderBrush="{x:Null}" Foreground="{x:Null}" HorizontalAlignment="Right" Margin="0,5.875,104.398,5.518" Style="{StaticResource MyButton}" Click="min_Click">
                     <Button.Background>
                         <ImageBrush ImageSource="pack://siteoforigin:,,,/Resources/min.png" Stretch="UniformToFill"/>
                     </Button.Background>
                 </Button>
             </Grid>
-            <GroupBox x:Name="Connexion" Header="Connexion" Margin="0,0,35,6" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" Grid.RowSpan="2" HorizontalAlignment="Right" Width="349" Height="185" VerticalAlignment="Bottom">
+            <GroupBox x:Name="Connexion" Header="Connexion" Margin="0,0,35,6" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C"
+                      Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Right" Width="349" Height="185" VerticalAlignment="Bottom">
                 <Grid HorizontalAlignment="Left" Height="125" Margin="5,5,0,0" VerticalAlignment="Top" Width="327">
                     <PasswordBox x:Name="PasswordBox" HorizontalAlignment="Left" Margin="112,45,0,0" VerticalAlignment="Top" Width="204" ToolTip="Mot de passe associé au compte Minecraft" FontFamily="Courier New"/>
                     <TextBox x:Name="LoginTextBox" HorizontalAlignment="Left" Height="18" Margin="112,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="204" ToolTip="Login / Adresse mail de connexion du compte Minecraft" FontFamily="Courier New"/>
                     <Label x:Name="LoginLabel" Content="Identifiant :" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="92" Foreground="#FF1A831A" FontSize="12"/>
                     <Label x:Name="PasswordLabel" Content="Mot de passe :" HorizontalAlignment="Left" Margin="10,45,0,60" Width="92" Foreground="#FF1A831A" FontSize="10" d:LayoutOverrides="Height"/>
-                    <Button x:Name="button" Content="Lancer le modpack" Height="40" Margin="16,0,11,-21" VerticalAlignment="Bottom" Style="{StaticResource MyButton}" Background="#FF007415" Foreground="Black">
+                    <Button x:Name="Button" Content="Lancer le modpack" Height="40" Margin="16,0,11,-21" VerticalAlignment="Bottom" Style="{StaticResource MyButton}" Background="#FF007415" Foreground="Black" Click="LancerMinecraft">
                         <Button.Effect>
                             <DropShadowEffect Color="#FF114414"/>
                         </Button.Effect>
@@ -152,33 +106,33 @@
                     <CheckBox x:Name="Souvenir" Content="Se souvenir de moi" HorizontalAlignment="Left" Margin="68,77,0,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
                 </Grid>
             </GroupBox>
-            <GroupBox x:Name="Modpack" Header="Modpack" HorizontalAlignment="Right" Margin="0,46,35,114" Width="349" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" >
+            <GroupBox Grid.Row="0" x:Name="Modpack" Header="Modpack" HorizontalAlignment="Right" Margin="0,46,35,114" Width="349" Foreground="#FF1A831A" FontFamily="Minecrafter" FontSize="16" Background="#7F363636" Opacity="0.98" BorderBrush="#FF6FAE6C" >
                 <Grid Margin="0,0,-12,-2.334">
                     <Grid.DataContext>
-                        <XmlDataProvider Source="ModpackList.xml" XPath="/Liste/Modpack"/>
+                        <XmlDataProvider x:Name="ModpackList" Source="ModpackList.xml" XPath="/Liste/Modpack"/>
                     </Grid.DataContext>
                     <Label x:Name="ModpackNomLabel" Content="Nom du modpack" Height="28.126" Margin="10,10,138.334,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
                     <Label x:Name="VersionLabel" Content="Version de Minecraft" Height="28.126" Margin="10,86.389,117.334,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
                     <ComboBox IsSynchronizedWithCurrentItem="True" x:Name="ModPack" Margin="89,43.126,25.667,0" VerticalAlignment="Top" ItemsSource="{Binding}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding XPath=./Nom}" />
+                                <TextBlock Text="{Binding XPath=./Nom,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <TextBox x:Name="VersionMc" HorizontalAlignment="Right" Margin="0,86.389,25.667,0" TextWrapping="Wrap" Text="{Binding XPath=./Version}" Width="75.5" Height="23" VerticalAlignment="Top" IsReadOnly="True"/>
+                    <TextBox x:Name="VersionMc" HorizontalAlignment="Right" Margin="0,86.389,25.667,0" TextWrapping="Wrap" Text="{Binding XPath=./Version,UpdateSourceTrigger=PropertyChanged}" Width="75.5" Height="23" VerticalAlignment="Top" IsReadOnly="True"/>
                     <Label x:Name="DescriptionLabel" Content="Description du modpack" Height="27" Margin="10,118,62,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
                     <RichTextBox x:Name="DescriptionModpack" Margin="60,150,26,0" IsReadOnly="True" Height="153" VerticalAlignment="Top">
                         <FlowDocument>
                             <Paragraph>
-                                <Run Text="{Binding XPath=./Description}"/>
+                                <Run Text="{Binding XPath=./Description,UpdateSourceTrigger=PropertyChanged}"/>
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
                     <Label x:Name="NbModLabel" Content="Nombre de mods" Height="27" Margin="10,323,151,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
-                    <TextBox x:Name="NbMod" HorizontalAlignment="Left" Height="23" Margin="198,323,0,0" TextWrapping="Wrap" Text="{Binding XPath=./NbMods}" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+                    <TextBox x:Name="NbMod" HorizontalAlignment="Left" Height="23" Margin="198,323,0,0" TextWrapping="Wrap" Text="{Binding XPath=./NbMods,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
                     <Label x:Name="UpdateLabel" Content="Derniere mise a jour" Height="27" Margin="10,355,117,0" VerticalAlignment="Top" Foreground="#FF1A831A"/>
-                    <TextBox x:Name="Update" HorizontalAlignment="Left" Height="23" Margin="106,386,0,0" TextWrapping="Wrap" Text="{Binding XPath=./LastUpdate,Converter={StaticResource Converter}}"  VerticalAlignment="Top" Width="212" IsReadOnly="True"/>
+                    <TextBox x:Name="Update" HorizontalAlignment="Left" Height="23" Margin="106,386,0,0" TextWrapping="Wrap" Text="{Binding XPath=./LastUpdate,Converter={StaticResource Converter},UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="212" IsReadOnly="True"/>
                 </Grid>
             </GroupBox>
         </Grid>
