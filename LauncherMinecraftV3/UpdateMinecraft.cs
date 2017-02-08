@@ -65,7 +65,7 @@ namespace LauncherMinecraftV3
                 fichier = Directory.GetCurrentDirectory() + @"\" + _modpack + @"\modpack\" + @"filelist.xml";
                 TelechargementFichiers(fichier, string.Concat(_serveur, @"modpack/", _modpack, @"/filelist.xml"));
                 fichier = Directory.GetCurrentDirectory() + @"\" + _modpack + @"\modpack\" + _modpack + @".xml";
-                TelechargementFichiers(fichier, string.Concat(_serveur, @"modpack/", _modpack,_modpack,@"/.xml"));
+                TelechargementFichiers(fichier, string.Concat(_serveur, @"modpack/", _modpack,@"/",_modpack,@".xml"));
                 return true;
             }
             catch

@@ -4,12 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -209,6 +211,7 @@ namespace LauncherMinecraftV3
                 else
                 {
                     UpdateGb.Visibility = Visibility.Visible;
+                    DoEvents();
                     UpdateMinecraft pb = new UpdateMinecraft(ModPack.Text, ServeurModPack.Text);
                     if (!pb.GetVersion())
                     {
@@ -376,5 +379,12 @@ namespace LauncherMinecraftV3
     MessageBoxButton.OK, (Style)Resources["MessageBoxStyle1"]);
             }
         }
+
+        public static void DoEvents()
+        {
+            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+                                                  new Action(delegate { }));
+        }
+
     }
 }
