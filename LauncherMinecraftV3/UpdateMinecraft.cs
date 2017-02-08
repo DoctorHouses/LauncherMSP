@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -16,13 +17,11 @@ namespace LauncherMinecraftV3
     {
         private readonly string _modpack;
         private readonly string _serveur;
-
         public UpdateMinecraft(string modpack, string serveur)
         {
             _modpack = modpack;
             _serveur = serveur;
         }
-
         public bool GetVersion()
         {
             try
@@ -32,10 +31,6 @@ namespace LauncherMinecraftV3
                 {
                     string xml1 = Directory.GetCurrentDirectory() + @"\" + _modpack + @"\modpack\" + _modpack + @".xml";
                     string xml2 = Directory.GetCurrentDirectory() + @"\" + _modpack + @"\modpack\" + _modpack + @"_update.xml";
-                    /*Dispatcher.Invoke(new Action(() => {
-                        this.UpdateProgression.Value = 1;
-                        this.Progress.Content = "1/4 : Vérification des mises à jours";
-                    }));*/
                     if (!File.Exists(xml1))
                     {
                         TelechargementFichiers(xml1, string.Concat(_serveur, @"modpack/", _modpack, @"/", _modpack, ".xml"));
@@ -63,6 +58,14 @@ namespace LauncherMinecraftV3
                     }
                 }
                 Directory.CreateDirectory(chemin);
+                string fichier = Directory.GetCurrentDirectory() + @"\" + _modpack + @"\" + _modpack + @".zip";
+                TelechargementFichiers(fichier, string.Concat(_serveur, @"modpack/", _modpack, @"/", _modpack, ".zip"));
+                ZipFile.ExtractToDirectory(fichier,Directory.GetCurrentDirectory() + @"\" + _modpack + @"\");
+                File.Delete(fichier);
+                fichier = Directory.GetCurrentDirectory() + @"\" + _modpack + @"\modpack\" + @"filelist.xml";
+                TelechargementFichiers(fichier, string.Concat(_serveur, @"modpack/", _modpack, @"/filelist.xml"));
+                fichier = Directory.GetCurrentDirectory() + @"\" + _modpack + @"\modpack\" + _modpack + @".xml";
+                TelechargementFichiers(fichier, string.Concat(_serveur, @"modpack/", _modpack,_modpack,@"/.xml"));
                 return true;
             }
             catch
@@ -94,16 +97,10 @@ namespace LauncherMinecraftV3
     MessageBoxButton.OK, (Style)Application.Current.FindResource("MessageBoxStyle1"));
             }
         }
-
         private bool MajMinecraft()
         {
             try
             {
-                /*Dispatcher.Invoke(new Action(() => {
-    this.UpdateProgression.Value = 2;
-    this.Progress.Content = "2/4 : Vérification de l'existence des dossiers";
-}));*/
-
                 #region Création des dossiers Minecraft
                 string chemin = Directory.GetCurrentDirectory() + @"\" + _modpack + @"\assets\indexes\";
                 Directory.CreateDirectory(chemin);
@@ -131,22 +128,12 @@ namespace LauncherMinecraftV3
                 XDocument local = XDocument.Load(string.Concat(Directory.GetCurrentDirectory(), @"\", _modpack, @"\modpack\filelist.xml"));
                 IEnumerable<XElement> elementsPatch = patch.Descendants().Where(x => x.Name == "Fichier");
                 IEnumerable<XElement> elementsLocal = patch.Descendants().Where(x => x.Name == "Fichier");
-                /*Dispatcher.Invoke(new Action(() => {
-                    this.UpdateProgression.Value = 3;
-                    this.Progress.Content = "3/4 : Téléchargement des fichiers";
-                }));*/
                 foreach (XElement content in elementsPatch)
                 {
                     string ids = content.Element("MD5")?.Value;
                     XElement result = local.Descendants("Fichier").FirstOrDefault(x => (string)x.Element("MD5") == ids);
-                    if (result == null)
-                    {
-                        /*Dispatcher.Invoke(new Action(() => {
-                            this.Telechargement.Content = X.Element("Nom").Value;
-                        }));*/
-
-                        TelechargementFichiers(Directory.GetCurrentDirectory() + @"\" + _modpack + content.Element("Chemin")?.Value, _serveur + @"/" + _modpack + content.Element("Chemin")?.Value);
-                    }
+                    if (result != null) continue;
+                    TelechargementFichiers(Directory.GetCurrentDirectory() + @"\" + _modpack + content.Element("Chemin")?.Value, _serveur + @"/" + _modpack + content.Element("Chemin")?.Value);
                 }
                 foreach (XElement content in elementsLocal)
                 {
@@ -158,10 +145,6 @@ namespace LauncherMinecraftV3
                     }
                 }
                 #endregion
-                /*Dispatcher.Invoke(new Action(() => {
-                    this.UpdateProgression.Value = 4;
-                    this.Progress.Content = "4/4 : Fin de la mise à jour";
-                }));*/
                 Patcher.GenerationXml(_modpack);
                 return true;
             }
@@ -170,26 +153,5 @@ namespace LauncherMinecraftV3
                 return false;
             }
         }
-
-        /*private void Ouverture(object sender, RoutedEventArgs e)
-        {
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate (object s, DoWorkEventArgs args)
-            {
-                this.GetVersion();
-            };
-
-            // RunWorkerCompleted will fire on the UI thread when the background process is complete
-            worker.RunWorkerCompleted += delegate (object s, RunWorkerCompletedEventArgs args)
-            {
-                if (args.Error != null)
-                {
-                    // an exception occurred on the background process, do some error handling
-                }
-                this.Close();
-            };
-            worker.RunWorkerAsync();
-
-        }*/
     }
 }

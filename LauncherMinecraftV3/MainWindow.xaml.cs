@@ -55,11 +55,11 @@ namespace LauncherMinecraftV3
         }
         private void btnLeftMenuHide_Click(object sender, RoutedEventArgs e)
         {
-            ShowHideMenu("sbHideLeftMenu", BtnLeftMenuHide, BtnLeftMenuShow, PnlLeftMenu);
+            ShowHideMenu("SbHideLeftMenu", BtnLeftMenuHide, BtnLeftMenuShow, PnlLeftMenu);
         }
         private void btnLeftMenuShow_Click(object sender, RoutedEventArgs e)
         {
-            ShowHideMenu("sbShowLeftMenu", BtnLeftMenuHide, BtnLeftMenuShow, PnlLeftMenu);
+            ShowHideMenu("SbShowLeftMenu", BtnLeftMenuHide, BtnLeftMenuShow, PnlLeftMenu);
         }
         private void ShowHideMenu(string storyboard, UIElement btnHide, UIElement btnShow, FrameworkElement pnl)
         {
@@ -98,19 +98,14 @@ namespace LauncherMinecraftV3
                 if (root?.SelectSingleNode("//Java") != null && root.SelectSingleNode("//Server") != null)
                 {
                     if (JavaMin.Text != string.Empty)
-                        // ReSharper disable once PossibleNullReferenceException
                         root.SelectSingleNode("//Java/Min").InnerText = JavaMin.Text;
                     if (JavaMax.Text != string.Empty)
-                        // ReSharper disable once PossibleNullReferenceException
                         root.SelectSingleNode("//Java/Max").InnerText = JavaMax.Text;
                     if (JavaPerm.Text != string.Empty)
-                        // ReSharper disable once PossibleNullReferenceException
                         root.SelectSingleNode("//Java/Perm").InnerText = JavaPerm.Text;
                     if (JavaChemin.Text != string.Empty)
-                        // ReSharper disable once PossibleNullReferenceException
                         root.SelectSingleNode("//Java/Path").InnerText = JavaChemin.Text;
                     if (ServeurModPack.Text != string.Empty)
-                        // ReSharper disable once PossibleNullReferenceException
                         root.SelectSingleNode("//Server/Url").InnerText = ServeurModPack.Text;
                     doc.Save("config.xml");
                 }
@@ -202,6 +197,7 @@ namespace LauncherMinecraftV3
         {
             try
             {
+                
                 if (string.IsNullOrWhiteSpace(LoginTextBox.Text))
                 {
                     MessageBox.Show("Le champ pour l'adresse mail ne peut pas être vide !", "Erreur");
@@ -212,8 +208,14 @@ namespace LauncherMinecraftV3
                 }
                 else
                 {
+                    UpdateGb.Visibility = Visibility.Visible;
                     UpdateMinecraft pb = new UpdateMinecraft(ModPack.Text, ServeurModPack.Text);
-                    if (!pb.GetVersion()) return;
+                    if (!pb.GetVersion())
+                    {
+                        UpdateGb.Visibility = Visibility.Hidden;
+                        return;
+                    }
+                    UpdateGb.Visibility = Visibility.Hidden;
                     _session.PlayerName = LoginTextBox.Text;
                     ConnexionMinecraft.LoginResult result = ConnexionMinecraft.GetLogin(_session.PlayerName, PasswordBox.Password, out _session);
                     switch (result)
@@ -273,7 +275,7 @@ namespace LauncherMinecraftV3
                                     string commande = @"-Xms" + minimum + @"m -Xmx" + maximum + @"m -XX:MaxPermSize=" + perm + " -Djava.library.path=" + Quote + Directory.GetCurrentDirectory() + @"\" + ModPack.Text + @"\natives" + Quote + " -cp " + librairies + " net.minecraft.launchwrapper.Launch --username " + _session.PlayerName + " --version " + versionMinecraft + " --gameDir " + Quote + Directory.GetCurrentDirectory() + @"\" + ModPack.Text + Quote + " --assetsDir " + Quote + Directory.GetCurrentDirectory() + @"\" + ModPack.Text + @"\assets" + Quote + " --assetIndex " + versionAssets + " --uuid " + _session.PlayerId + " --accessToken " + _session.Id + " --userProperties {} --userType mojang --tweakClass " + forgeClass;
                                     Process.Start(chemin, commande);
                                     /*ProcessStartInfo psi = new ProcessStartInfo();
-                                psi.FileName = Chemin;
+                                psi.FileName = chemin;
                                 psi.UseShellExecute = false;
                                 psi.Arguments = commande;
                                 psi.RedirectStandardOutput = true;
@@ -314,7 +316,7 @@ namespace LauncherMinecraftV3
                         default:
                             MessageBox.Show("Il semblerait qu'une erreur soit survenue lors de la connexion ! Veuillez réessayer", "Une erreur s'est produite", MessageBoxButton.OK, (Style)Resources["MessageBoxStyle1"]);
                             break;
-                    }
+                    } 
                 }
             }
             catch
@@ -324,10 +326,45 @@ namespace LauncherMinecraftV3
         }
         private void ListeMods(object sender, RoutedEventArgs e)
         {
+            if (!File.Exists("config.xml"))
+            {
+                XmlTextWriter writer = new XmlTextWriter("config.xml", System.Text.Encoding.UTF8);
+                writer.WriteStartDocument();
+                writer.Formatting = Formatting.Indented;
+                writer.Indentation = 2;
+                writer.WriteStartElement("config");
+                writer.WriteStartElement("Java");
+                writer.WriteStartElement("Min");
+                writer.WriteString("1024");
+                writer.WriteEndElement();
+                writer.WriteStartElement("Max");
+                writer.WriteString("4096");
+                writer.WriteEndElement();
+                writer.WriteStartElement("Perm");
+                writer.WriteString("256");
+                writer.WriteEndElement();
+                writer.WriteStartElement("Path");
+                writer.WriteString("");
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+                writer.WriteStartElement("Server");
+                writer.WriteStartElement("Url");
+                writer.WriteString("http://mcpatch.more-salt-plz.fr/Client/");
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
+                writer.Close();
+                string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+                Config.Source = new Uri(appPath + @"\config.xml");
+            }
             if (ServeurModPack.Text != null)
             {
                 string xml1 = Directory.GetCurrentDirectory() + @"\" + @"ModpackList.xml";
-                UpdateMinecraft.TelechargementFichiers(xml1, string.Concat(ServeurModPack.Text, @"modpack/", "ModpackList.xml"));
+                XmlDocument config = new XmlDocument();
+                config.Load("config.xml");
+                XmlNodeList url = config.GetElementsByTagName("Url");
+                UpdateMinecraft.TelechargementFichiers(xml1, string.Concat(url[0].InnerText, @"modpack/", "ModpackList.xml"));
                 string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
                 ModpackList.Source = new Uri(appPath + @"\ModpackList.xml");
             }
