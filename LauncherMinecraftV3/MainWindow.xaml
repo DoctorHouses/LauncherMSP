@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LauncherMinecraftV3"
-    xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-    x:Class="LauncherMinecraftV3.MainWindow"
+        x:Class="LauncherMinecraftV3.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="699.6" Width="1049.4" AllowsTransparency="True" Background="Transparent" WindowStyle="None" Icon="Chrisl21-Minecraft-3D-Grass.ico" WindowStartupLocation="CenterOwner" Initialized="RecuperationStorage" Closing="SaveStorage" SizeChanged="Resize" Loaded="ListeMods">
 
@@ -35,7 +34,6 @@
             <Grid.Effect>
                 <DropShadowEffect/>
             </Grid.Effect>
-            <wpf:ChromiumWebBrowser Grid.Row="0" Address="http://mcupdate.tumblr.com/" Margin="53,61,408,34" />
             <StackPanel Grid.Row="0" Panel.ZIndex="2" x:Name="PnlLeftMenu" Orientation="Horizontal" Height="500" HorizontalAlignment="Left" Margin="-300,97.8,0,15.7">
                 <Border BorderBrush="#FF12831C" BorderThickness="2" Width="300" Background="#FF363636" CornerRadius="0,6,6,0" />
                 <Grid>

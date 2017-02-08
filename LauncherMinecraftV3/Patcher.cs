@@ -32,7 +32,7 @@ namespace LauncherMinecraftV3
                 select new XElement("Fichier",
                     new XElement("Nom", fi.Name),
                     new XElement("MD5", GenerationMd5(fi.FullName)),
-                    new XElement("Chemin", CheminRelatif(fi.FullName + fi.Name))
+                    new XElement("Chemin", CheminRelatif(fi.FullName))
                 )
             );
         }

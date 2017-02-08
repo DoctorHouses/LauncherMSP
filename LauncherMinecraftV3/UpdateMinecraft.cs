@@ -127,7 +127,7 @@ namespace LauncherMinecraftV3
                 XDocument patch = XDocument.Load(url);
                 XDocument local = XDocument.Load(string.Concat(Directory.GetCurrentDirectory(), @"\", _modpack, @"\modpack\filelist.xml"));
                 IEnumerable<XElement> elementsPatch = patch.Descendants().Where(x => x.Name == "Fichier");
-                IEnumerable<XElement> elementsLocal = patch.Descendants().Where(x => x.Name == "Fichier");
+                IEnumerable<XElement> elementsLocal = local.Descendants().Where(x => x.Name == "Fichier");
                 foreach (XElement content in elementsPatch)
                 {
                     string ids = content.Element("MD5")?.Value;
@@ -141,7 +141,7 @@ namespace LauncherMinecraftV3
                     XElement result = patch.Descendants("Fichier").FirstOrDefault(x => (string)x.Element("MD5") == ids);
                     if (result == null)
                     {
-                        File.Delete(Directory.GetCurrentDirectory() + @"\" + _modpack + content.Element("Chemin")?.Value);
+                        File.Delete(Directory.GetCurrentDirectory() + @"\" + content.Element("Chemin")?.Value);
                     }
                 }
                 #endregion
