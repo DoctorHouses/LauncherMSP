@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\didde\.Rider2019.1\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\didde\.Rider2019.1\system\resharper-host\local\Transient\ReSharperHost\v191\SolutionCaches\_LauncherMinecraftV3.-236652155.00" t="ExcludeRecursive" />
+    <e p="C:\Users\didde\source\repos\LauncherMSP" t="IncludeFlat">
+      <e p="LauncherMinecraft" t="IncludeRecursive">
+        <e p="LauncherMinecraft.vdproj" t="IncludeRecursive" />
+      </e>
+      <e p="LauncherMinecraftV3" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="app.manifest" t="Include" />
+        <e p="App.xaml" t="Include" />
+        <e p="App.xaml.cs" t="Include" />
+        <e p="AutoTimeOut.cs" t="Include" />
+        <e p="background.png" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Chrisl21-Minecraft-3D-Grass.ico" t="Include" />
+        <e p="config.xml" t="Include" />
+        <e p="ConnexionMinecraft.cs" t="Include" />
+        <e p="Converter.cs" t="Include" />
+        <e p="LauncherMinecraftV3.csproj" t="IncludeRecursive" />
+        <e p="MainWindow.xaml" t="Include" />
+        <e p="MainWindow.xaml.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Patcher.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+          <e p="Settings.Designer.cs" t="Include" />
+          <e p="Settings.settings" t="Include" />
+        </e>
+        <e p="Resources" t="Include">
+          <e p="close.png" t="Include" />
+          <e p="close_panel.png" t="Include" />
+          <e p="logo.png" t="Include" />
+          <e p="max.png" t="Include" />
+          <e p="min.png" t="Include" />
+          <e p="open_panel.png" t="Include" />
+          <e p="restore.png" t="Include" />
+        </e>
+        <e p="SessionToken.cs" t="Include" />
+        <e p="UpdateMinecraft.cs" t="Include" />
+      </e>
+      <e p="LauncherMinecraftV3.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
